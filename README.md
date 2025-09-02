@@ -23,9 +23,59 @@ Close the Simulation Once done, by going to Simulation → "Close Simulation
 Input/Output Signal Diagram:
 
 RTL Code:
+```
+module sevseg (bcd,seg);
+    input [3:0] bcd;
+    output reg[6:0] seg;
 
+    always @(bcd) begin
+        case (bcd)
+            4'b0000:seg= 7'b0111111;
+            4'b0001:seg= 7'b0001010;
+            4'b0010:seg= 7'b1110011;
+            4'b0011:seg= 7'b1011011;
+            4'b0100:seg= 7'b1001110;
+            4'b0101:seg= 7'b1011101;
+            4'b0110:seg= 7'b1111101;
+            4'b0111:seg= 7'b0001011;
+            4'b1000:seg= 7'b1111111;
+            4'b1001:seg= 7'b1011111;
+            default:seg= 7'b0;
+        endcase
+    end
+endmodule
+```
 TestBench:
-
+```
+module sevsegtb;
+    reg [3:0] bcdtb;
+    wire [6:0] segtb;
+sevseg dut( .bcd(bcdtb),.seg(segtb));
+initial
+    begin
+        bcdtb = 4'b0;
+    #100
+        bcdtb = 4'b0001;
+    #100
+        bcdtb = 4'b0010;
+    #100
+        bcdtb = 4'b0011;
+    #100
+        bcdtb = 4'b0100;
+    #100
+        bcdtb = 4'b0101;
+    #100
+        bcdtb = 4'b0110;
+    #100
+        bcdtb = 4'b0111;
+    #100
+        bcdtb = 4'b1000;
+    #100
+        bcdtb = 4'b1001;
+    end
+endmodule
+```
 Output waveform:
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/cf70f895-6542-4fd7-add7-2f800dc68d79" />
 
 Conclusion:
